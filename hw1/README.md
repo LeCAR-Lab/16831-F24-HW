@@ -1,13 +1,13 @@
 ## Some potentially useful links for pytorch and gym
-- For pytorch:
-https://www.cs.utexas.edu/~yukez/cs391r_fall2021/slides/tutorial_09-29_pytorch_intro.pdf#page=6.00
-https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html
-https://rail.eecs.berkeley.edu/deeprlcourse/deeprlcourse/static/slides/lec-3.pdf#page=25.00
-https://cs230.stanford.edu/blog/pytorch/
-- For openai gym:
-https://www.gocoder.one/blog/rl-tutorial-with-openai-gym/
-https://www.gymlibrary.dev/content/tutorials/
-https://blog.paperspace.com/getting-started-with-openai-gym/
+- For pytorch:  
+	- https://www.cs.utexas.edu/~yukez/cs391r_fall2021/slides/tutorial_09-29_pytorch_intro.pdf#page=6.00  
+	- https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html  
+	- https://rail.eecs.berkeley.edu/deeprlcourse/deeprlcourse/static/slides/lec-3.pdf#page=25.00  
+	- https://cs230.stanford.edu/blog/pytorch/  
+- For openai gym:  
+	- https://www.gocoder.one/blog/rl-tutorial-with-openai-gym/  
+	- https://www.gymlibrary.dev/content/tutorials/  
+	- https://blog.paperspace.com/getting-started-with-openai-gym/  
 
 
 ## Setup
