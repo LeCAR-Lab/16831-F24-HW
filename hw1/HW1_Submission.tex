@@ -13,11 +13,66 @@
 \usepackage{parskip}
 \usepackage{natbib}
 \usepackage{listings}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[hidelinks]{hyperref}       % hyperlinks
+\usepackage{wrapfig}
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{amsmath,amssymb} % define this before the line numbering.
+\usepackage{makecell}
+% % Support for easy cross-referencing
+\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{colortbl}
+\usepackage{xcolor}
+% \usepackage{epsfig} % for postscript graphics files
+\usepackage{empheq}
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+% \usepackage{times} % assumes new font selection scheme installed
+\usepackage{bm}
+\usepackage{bbding} 
+% \usepackage{cite}
+\usepackage{diagbox}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+% \usepackage{ulem} %to strike the words
+% \usepackage{hyperref}
+% \usepackage{soul}
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+% \definecolor{themeblue}{RGB}{57, 162, 219}
+% \definecolor{themegreen}{RGB}{87, 204, 153}
+% \definecolor{forestgreen}{RGB}{47, 159, 87}
+
+\usepackage[capitalize]{cleveref}
+% \usepackage{todonotes}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{multirow}
+%\usepackage{ bbold }
+\usepackage{mathrsfs}
+\usepackage[utf8]{inputenc}
+%\usepackage{subfigure}
+\usepackage{pifont}
+\usepackage{threeparttable}
 
 \usepackage{hyperref}
 \usepackage[color=red]{todonotes}
 \usepackage{forest}
 \definecolor{light-yellow}{HTML}{FFE5CC}
+\newcounter{RNum}
+\renewcommand{\theRNum}{\arabic{RNum}}
+\newcommand{\Remark}{\noindent\textbf{Remark}~\refstepcounter{RNum}\textbf{\theRNum}: }
+\newcommand{\fref}[1]{Fig.~\ref{#1}}
+\newcommand{\sref}[1]{Section~\ref{#1}}
+\newcommand{\tref}[1]{Table~\ref{#1}}
+\newcommand{\appref}[1]{Appendix~\ref{#1}}
+\newcommand{\highlight}[1]{\noindent\quad\textbf{#1}:~}
+\newcommand{\myparagraph}[1]{\noindent\textbf{#1}~}
 
 \newpagestyle{ruled}
 {\sethead{CMU 16-831}{Intro to Robot Learning}{Fall 2024}\headrule
@@ -35,20 +90,64 @@ backgroundcolor = \color{light-yellow}
 \begin{centering}
     {\Large Assignment 1: Imitation Learning} \\
     \vspace{.25cm}
-    \textbf{Andrew ID:} \texttt{Write your Andrew ID here.} \\
-    \textbf{Collaborators:} \texttt{Write the Andrew IDs of your collaborators here.}\\ 
+    \textbf{Andrew ID:} \texttt{YOUR ID} \\
+    \textbf{Collaborators:} \texttt{YOUR COLLABORATORS}\\ 
 \end{centering}
 
 \vspace{.5cm}
 
-\section{Behavioral Cloning}
-\subsection{Part 2}
-\subsection{Part 3}
-\subsection{Part 4}
+\section{Behavioral Cloning (65 pt)}
+\subsection{Part 2 (10 pt)}
+\# TODO
+\begin{table}[!h]
+  \centering
+  \caption{Report your result in this table.}
+    \begin{tabular}{cccccc}
+    \toprule[1.0pt]
+    Metric/Env & Ant-v2 & Humanoid-v2 & Walker2d-v2 & Hopper-v2 & HalfCheetah-v2 \\
+    \midrule
+    Mean  & xxx & xxx & xxx & xxx & xxx \\
+    Std.  & xxx & xxx & xxx  & xxx  & xxx \\
+    \bottomrule[1.0pt]
+    \end{tabular}%
+  \label{tab:p2}%
+\end{table}%
 
-\section{DAgger}
-\subsection{Part 2}
+\subsection{Part 3 (35 pt)}
+\# TODO
+\begin{table}[htbp]
+  \centering
+  \caption{Fill your results in this table.}
+    \begin{tabular}{ccccc}
+    \toprule[1.0pt]
+    Env   & \multicolumn{2}{c}{Ant-v2} & \multicolumn{2}{c}{Humanoid-v2} \\
+    \midrule
+    Metric & Mean  & Std.  & Mean  & Std. \\
+    Expert & xxx & xxx & xxx & xxx \\
+    BC    & xxx & xxx & xxx & xxx \\
+    \bottomrule[1.0pt]
+    \end{tabular}%
+  \label{tab:p3}%
+\end{table}%
 
+\subsection{Part 4 (20 pt)}
+\# TODO, fill in the \fref{fig:p4}, provide some analysis.
 
+\begin{figure*}[!h]
+	\centering
+\includegraphics[width=0.5\columnwidth]{figure_placeholder.pdf}
+	\caption{BC agent’s performance varies with the value of ??? parameter in ??? environment.}
+	\label{fig:p4}
+\end{figure*}
+
+\section{DAgger (35 pt)}
+\subsection{Part 2 (35 pt)}
+\# TODO, Report the results for Ant-v2 and Humanoid-v2 in \fref{fig:p5}:
+\begin{figure*}[!h]
+	\centering
+	\includegraphics[width=1.0\columnwidth]{figure_placeholder.pdf}
+	\caption{Learning curve, plotting the number of DAgger iterations vs. the policy’s mean return, with error bars to show the standard deviation. Please show the Ant-v2 environment on the left and the right part demonstrates Humanoid-v2 environment.}
+	\label{fig:p5}
+\end{figure*}
 
 \end{document}
