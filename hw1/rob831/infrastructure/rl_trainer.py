@@ -10,6 +10,8 @@ from rob831.infrastructure.logger import Logger
 from rob831.infrastructure import utils
 import pickle 
 
+import pdb
+
 # how many rollouts to save as videos to tensorboard
 MAX_NVIDEO = 2
 # MAX_VIDEO_LEN = 40  # we overwrite this in the code below
@@ -168,14 +170,16 @@ class RL_Trainer(object):
         # HINT: depending on if it's the first iteration or not, decide whether to either
         # (1) load the data. In this case you can directly return as follows
         # ``` return loaded_paths, 0, None ```
+        if itr > 0:
+            return self.agent.sample(batch_size), 0, None #TODO
 
         # (2) collect `self.params['batch_size']` transitions
-
         # TODO collect `batch_size` samples to be used for training
         # HINT1: use sample_trajectories from utils
         # HINT2: you want each of these collected rollouts to be of length self.params['ep_len']
+
         print("\nCollecting data to be used for training...")
-        paths, envsteps_this_batch = TODO
+        paths, envsteps_this_batch = utils.sample_trajectories(self.env, collect_policy, min_timesteps_per_batch, max_path_length) #TODO
 
         # collect more rollouts with the same policy, to be saved as videos in tensorboard
         # note: here, we collect MAX_NVIDEO rollouts, each of length MAX_VIDEO_LEN
@@ -196,12 +200,12 @@ class RL_Trainer(object):
             # TODO sample some data from the data buffer
             # HINT1: use the agent's sample function
             # HINT2: how much data = self.params['train_batch_size']
-            ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch = TODO
+            ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch = self.agent.sample(self.params['train_batch_size']) # TODO 
 
             # TODO use the sampled data to train an agent
             # HINT: use the agent's train function
             # HINT: keep the agent's training log for debugging
-            train_log = TODO
+            train_log = self.agent.train(ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch) # TODO
             all_logs.append(train_log)
         return all_logs
 

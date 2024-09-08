@@ -5,6 +5,8 @@ from rob831.infrastructure.rl_trainer import RL_Trainer
 from rob831.agents.bc_agent import BCAgent
 from rob831.policies.loaded_gaussian_policy import LoadedGaussianPolicy
 
+import pdb
+
 class BC_Trainer(object):
 
     def __init__(self, params):
