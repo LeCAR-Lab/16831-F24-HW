@@ -60,6 +60,13 @@
 \usepackage{pifont}
 \usepackage{threeparttable}
 
+\usepackage{listings}
+\lstset{
+basicstyle=\small\ttfamily,
+columns=flexible,
+breaklines=true
+}
+
 \usepackage{hyperref}
 \usepackage[color=red]{todonotes}
 \usepackage{forest}
@@ -90,15 +97,18 @@ backgroundcolor = \color{light-yellow}
 \begin{centering}
     {\Large Assignment 1: Imitation Learning} \\
     \vspace{.25cm}
-    \textbf{Andrew ID:} \texttt{YOUR ID} \\
-    \textbf{Collaborators:} \texttt{YOUR COLLABORATORS}\\ 
+    \textbf{Andrew ID:} \texttt{micahn} \\
+    \textbf{Collaborators:} \texttt{portegak, giria, nludlow}\\ 
 \end{centering}
 
 \vspace{.5cm}
 
 \section{Behavioral Cloning (65 pt)}
 \subsection{Part 2 (10 pt)}
-\# TODO
+
+To get the following results in Table \ref{tab:p2}, run the respective command in `RUN.md` to replicate results.
+
+
 \begin{table}[!h]
   \centering
   \caption{Report your result in this table.}
@@ -106,47 +116,55 @@ backgroundcolor = \color{light-yellow}
     \toprule[1.0pt]
     Metric/Env & Ant-v2 & Humanoid-v2 & Walker2d-v2 & Hopper-v2 & HalfCheetah-v2 \\
     \midrule
-    Mean  & xxx & xxx & xxx & xxx & xxx \\
-    Std.  & xxx & xxx & xxx  & xxx  & xxx \\
+    Mean  & 4713.653 & 10344.518 & 5566.846 & 3772.670 & 4205.778 \\
+    Std.  & 12.197 & 20.981 & 9.238  & 1.948  & 83.039 \\
     \bottomrule[1.0pt]
     \end{tabular}%
+    \caption{Expert and standard deviation of policy's return. Key parameters used are ep\_len of 1000, num\_agent\_train\_steps\_per\_iter of 1000, n\_iter of 1, batch\_size of 1000, eval\_back\_size of 1000, train\_batch size of 100, n\_layers of 2, size of 64, learning rate of 0.005.}
   \label{tab:p2}%
 \end{table}%
 
 \subsection{Part 3 (35 pt)}
-\# TODO
+\tref{tab:p3} shows the results when tuning hyperparameters for the Ant-v2 environment and leaving these hyperparameters for Humanoid-v2. Run the respective command in `RUN.md` to replicate results.
+
 \begin{table}[htbp]
   \centering
   \caption{Fill your results in this table.}
     \begin{tabular}{ccccc}
     \toprule[1.0pt]
-    Env   & \multicolumn{2}{c}{Ant-v2} & \multicolumn{2}{c}{[Another Env]} \\
+    Env   & \multicolumn{2}{c}{Ant-v2} & \multicolumn{2}{c}{Humanoid-v2} \\
     \midrule
     Metric & Mean  & Std.  & Mean  & Std. \\
-    Expert & xxx & xxx & xxx & xxx \\
-    BC    & xxx & xxx & xxx & xxx \\
+    Expert & 4713.653 & 12.197 & 10344.518 & 20.981 \\
+    BC    & 4654.067 & 76.135 & 300.748 & 47.048 \\
     \bottomrule[1.0pt]
     \end{tabular}%
   \label{tab:p3}%
 \end{table}%
 
 \subsection{Part 4 (20 pt)}
-\# TODO, fill in the \fref{fig:p4}, provide some analysis.
+Fig. \ref{fig:p4} shows how the Behavior Clone's performance varies with respect to number of training steps. To get the following results in Fig. \ref{fig:p4}, run the respective command in `RUN.md` to replicate results.
 
 \begin{figure*}[!h]
 	\centering
-\includegraphics[width=0.5\columnwidth]{figure_placeholder.pdf}
-	\caption{BC agent’s performance varies with the value of ??? parameter in ??? environment.}
+\includegraphics[width=0.5\columnwidth]{bc_performance_vs_tsteps.png}
+	\caption{BC agent’s performance (mean and standard deviation) varies with the value of the training steps parameter in Ant v2 environment. I chose this parameter because I know in any learning context, the number of training steps or epochs a model has to learn from the data and descend in loss, the better it becomes, until performance plateaus or saturates.}
 	\label{fig:p4}
 \end{figure*}
 
+\clearpage
 \section{DAgger (35 pt)}
 \subsection{Part 2 (35 pt)}
-\# TODO, Report the results for Ant-v2 and [Another Env] in \fref{fig:p5}:
-\begin{figure*}[!h]
+\fref{fig:p5} shows the learning curve results of the DAgger algorithm. DAgger similarly or outperforms the expert, with no standard deviation at all for Ant-v2. For Humanoid-v2, DAgger matches the Behavior Clone data at best but vastly underperforms the expert.  Run the respective command in `RUN.md` to replicate results.
+
+\begin{figure*}[!ht]
 	\centering
-	\includegraphics[width=1.0\columnwidth]{figure_placeholder.pdf}
-	\caption{Learning curve, plotting the number of DAgger iterations vs. the policy’s mean return, with error bars to show the standard deviation. Please show the Ant-v2 environment results on the left and the right part demonstrates [Another Env] results.}
+        \begin{tabular}{cc}
+           \includegraphics[width=0.5\columnwidth]{dagger_ant.png}  & 
+           \includegraphics[width=0.5\columnwidth]{dagger_humanoid.png}
+        \end{tabular}
+
+	\caption{Learning curve, plotting the number of DAgger iterations vs. the policy’s mean return, with error bars to show the standard deviation.  The Ant-v2 environment performance is in the left plot and the Humanoid-v2 environment performance is in the right plot. Key parameters used are ep\_len of 1000, num\_agent\_train\_steps\_per\_iter of 1000, n\_iter of 10, batch\_size of 1000, eval\_back\_size of 1000, train\_batch size of 100, n\_layers of 2, size of 64, learning rate of 0.005.}
 	\label{fig:p5}
 \end{figure*}
 

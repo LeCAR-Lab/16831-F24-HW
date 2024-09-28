@@ -1,5 +1,6 @@
 import os
 import time
+import matplotlib.pyplot as plt
 
 from rob831.infrastructure.rl_trainer import RL_Trainer
 from rob831.agents.bc_agent import BCAgent
@@ -40,7 +41,7 @@ class BC_Trainer(object):
 
     def run_training_loop(self):
 
-        self.rl_trainer.run_training_loop(
+        mean, std = self.rl_trainer.run_training_loop(
             n_iter=self.params['n_iter'],
             initial_expertdata=self.params['expert_data'],
             collect_policy=self.rl_trainer.agent.actor,
@@ -48,6 +49,7 @@ class BC_Trainer(object):
             relabel_with_expert=self.params['do_dagger'],
             expert_policy=self.loaded_expert_policy,
         )
+        return mean, std
 
 def main():
     import argparse
@@ -58,6 +60,7 @@ def main():
     parser.add_argument('--exp_name', '-exp', type=str, default='pick an experiment name', required=True)
     parser.add_argument('--do_dagger', action='store_true')
     parser.add_argument('--ep_len', type=int, default=1000)
+    parser.add_argument('--tuning', action='store_true')
 
     parser.add_argument('--num_agent_train_steps_per_iter', type=int, default=1000)  # number of gradient steps for training policy (per iter in n_iter)
     parser.add_argument('--n_iter', '-n', type=int, default=1)
@@ -109,9 +112,26 @@ def main():
     ###################
     ### RUN TRAINING
     ###################
-
     trainer = BC_Trainer(params)
-    trainer.run_training_loop()
+
+    # This is very janky. But I don't like the interface predefined here
+    if params['tuning']:
+        means, stds, steps = [], [], []
+        for train_step in range(200, 10200, 200):
+            params['num_agent_train_steps_per_iter'] = train_step
+            mean, std = trainer.run_training_loop()
+            means.append(mean)
+            stds.append(std)
+            steps.append(train_step)
+        plt.plot(steps, means, color='r', label='mean')
+        plt.plot(steps, stds, color='b', label='std')
+        plt.title("Behavior Clone Performance vs Number of Training Steps")
+        plt.xlabel("Number of Training Steps")
+        plt.ylabel("Mean / Std")
+        plt.legend()
+        plt.show()
+    else:
+        _, _ = trainer.run_training_loop()
 
 if __name__ == "__main__":
     main()

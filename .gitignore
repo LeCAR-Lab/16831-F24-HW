@@ -1,1 +1,7 @@
 *.DS_Store
+data/
+__pycache__
+*.zip
+*egg-info/
+run_logs
+submit/

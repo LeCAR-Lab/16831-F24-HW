@@ -45,10 +45,19 @@ def build_mlp(
     if isinstance(output_activation, str):
         output_activation = _str_to_activation[output_activation]
 
+    model = nn.Sequential()
+    model.add_module("dense1", nn.Linear(input_size, size))
+    model.add_module("act1", activation)
+    for n in range(n_layers):
+        model.add_module(f"dense{n+2}", nn.Linear(size, size))
+        model.add_module(f"act{n+2}", activation)
+    model.add_module("output",nn.Linear(size, output_size))
+    model.add_module("outact",output_activation)
+
+
     # TODO: return a MLP. This should be an instance of nn.Module  [OK]
     # Note: nn.Sequential is an instance of nn.Module.
-    raise NotImplementedError
-
+    return model
 
 device = None
 

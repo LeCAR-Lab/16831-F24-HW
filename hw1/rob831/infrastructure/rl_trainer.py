@@ -1,6 +1,7 @@
 from collections import OrderedDict
 import numpy as np
 import time
+import matplotlib.pyplot as plt
 
 import gym
 import torch
@@ -95,6 +96,9 @@ class RL_Trainer(object):
         # init vars at beginning of training
         self.total_envsteps = 0
         self.start_time = time.time()
+        means = []
+        stds = []
+        its = []
 
         for itr in range(n_iter):
             print("\n\n********** Iteration %i ************"%itr)
@@ -136,12 +140,33 @@ class RL_Trainer(object):
 
                 # perform logging
                 print('\nBeginning logging procedure...')
-                self.perform_logging(
+                mean, std = self.perform_logging(
                     itr, paths, eval_policy, train_video_paths, training_logs)
+                means.append(mean)
+                stds.append(std)
+                its.append(itr)
 
                 if self.params['save_params']:
                     print('\nSaving agent params')
                     self.agent.save('{}/policy_itr_{}.pt'.format(self.params['logdir'], itr))
+        
+        # This is very janky. But I don't like the interface predefined here
+        if self.params['tuning']:
+            return means[0], stds[0]
+
+        # Also janky.
+        if self.params['do_dagger']:
+            # bc_mean = 4654.067
+            bc_mean = 300.748
+            plt.errorbar(its, means, yerr=stds, ecolor='k', color='m', label='DAgger')
+            plt.axhline(np.mean(self.initial_return), 0, 1, color='r', label='Expert data')
+            plt.axhline(np.mean(bc_mean), 0, 1, color='b', label='BC data')
+            plt.title(f"DAgger Performance with Iterations for {self.params['env_name']}")
+            plt.xlabel("DAgger Iterations")
+            plt.ylabel("Policy mean return")
+            plt.legend()
+            plt.show()
+        return None, None
 
     ####################################
     ####################################
@@ -168,14 +193,22 @@ class RL_Trainer(object):
         # HINT: depending on if it's the first iteration or not, decide whether to either
         # (1) load the data. In this case you can directly return as follows
         # ``` return loaded_paths, 0, None ```
-
         # (2) collect `self.params['batch_size']` transitions
 
-        # TODO collect `batch_size` samples to be used for training
-        # HINT1: use sample_trajectories from utils
-        # HINT2: you want each of these collected rollouts to be of length self.params['ep_len']
-        print("\nCollecting data to be used for training...")
-        paths, envsteps_this_batch = TODO
+        envsteps_this_batch = 0
+        if itr == 0:
+            if load_initial_expertdata:
+                file = open(load_initial_expertdata, 'rb')
+                paths = pickle.load(file)
+                file.close()
+            else:
+                print("Missing expert data. Try again")
+        else:
+            # TODO collect `batch_size` samples to be used for training
+            # HINT1: use sample_trajectories from utils
+            # HINT2: you want each of these collected rollouts to be of length self.params['ep_len']
+            print("\nCollecting data to be used for training...")
+            paths, envsteps_this_batch = utils.sample_trajectories(self.env, collect_policy, batch_size, self.params['ep_len'])
 
         # collect more rollouts with the same policy, to be saved as videos in tensorboard
         # note: here, we collect MAX_NVIDEO rollouts, each of length MAX_VIDEO_LEN
@@ -196,12 +229,12 @@ class RL_Trainer(object):
             # TODO sample some data from the data buffer
             # HINT1: use the agent's sample function
             # HINT2: how much data = self.params['train_batch_size']
-            ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch = TODO
+            ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch = self.agent.sample(self.params['train_batch_size'])
 
             # TODO use the sampled data to train an agent
             # HINT: use the agent's train function
             # HINT: keep the agent's training log for debugging
-            train_log = TODO
+            train_log = self.agent.train(ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch)
             all_logs.append(train_log)
         return all_logs
 
@@ -211,6 +244,9 @@ class RL_Trainer(object):
         # TODO relabel collected obsevations (from our policy) with labels from an expert policy
         # HINT: query the policy (using the get_action function) with paths[i]["observation"]
         # and replace paths[i]["action"] with these expert labels
+
+        for path in paths:
+            path['action'] = expert_policy.get_action(path['observation'])
 
         return paths
 
@@ -273,6 +309,9 @@ class RL_Trainer(object):
             for key, value in logs.items():
                 print('{} : {}'.format(key, value))
                 self.logger.log_scalar(value, key, itr)
+            print(f"\n\nPct performance: {np.mean(eval_returns)/np.mean(train_returns):.3f}")
             print('Done logging...\n\n')
 
             self.logger.flush()
+
+            return np.mean(eval_returns), np.std(eval_returns)
