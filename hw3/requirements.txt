@@ -1,0 +1,16 @@
+numpy==1.25.2
+mujoco==2.2.1
+mujoco-py
+free-mujoco-py==2.1.6
+gym[box2d]==0.25.1
+pyglet==1.5.0
+tensorboard==2.10.0
+tensorboardX==2.5.1
+matplotlib
+patchelf
+torch==2.0.1
+pyvirtualdisplay
+IPython
+gym-notebook-wrapper
+# opencv-python==4.4.0.42
+# ipdb==0.13.3
