@@ -44,5 +44,5 @@ For RND :
 - [rob831/hw4_part2/exploration/rnd_model.py](rob831/hw4_part2/exploration/rnd_model.py)
 - [rob831/hw4_part2/agents/explore_or_exploit_agent.py](rob831/hw4_part2/agents/explore_or_exploit_agent.py)
 
-See the [assignment PDF](rob831_hw4.pdf) for more details on what files to edit.
+See the [assignment PDF](hw4.pdf) for more details on what files to edit.
 
